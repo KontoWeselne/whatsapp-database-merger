@@ -1,7 +1,14 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+    }
+}
+
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "2.0.20"
     application
 }
 
@@ -14,14 +21,23 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.4")
-    implementation("com.squareup.sqldelight:sqlite-driver:1.5.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.6")
+    implementation("com.squareup.sqldelight:sqlite-driver:1.5.5")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
-}
 
 application {
     mainClass.set("dev.natario.MainKt")
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+kotlin {
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
